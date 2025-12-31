@@ -1,3 +1,4 @@
+import os
 import requests
 import yaml
 
@@ -8,7 +9,6 @@ resp = requests.get(URL, timeout=30)
 resp.raise_for_status()
 
 data = yaml.safe_load(resp.text)
-
 payload = data.get("payload", [])
 
 domains = set()
@@ -18,6 +18,8 @@ for rule in payload:
         domains.add(rule.split(",", 1)[1])
     elif rule.startswith("DOMAIN,"):
         domains.add(rule.split(",", 1)[1])
+
+os.makedirs(os.path.dirname(OUT), exist_ok=True)
 
 with open(OUT, "w", encoding="utf-8") as f:
     for d in sorted(domains):
