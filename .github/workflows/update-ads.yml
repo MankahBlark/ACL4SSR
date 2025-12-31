@@ -19,10 +19,12 @@ jobs:
           python-version: "3.x"
 
       - name: Install deps
-        run: pip install pyyaml requests
+        run: |
+          pip install --upgrade pip
+          pip install pyyaml requests
 
       - name: Generate list
-        run: python scripts/yaml2list.py
+        run: python .github/workflows/scripts/yaml2list.py
 
       - name: Commit changes
         run: |
