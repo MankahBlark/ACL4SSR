@@ -21,11 +21,11 @@ for item in payload:
     if not item:
         continue
 
-    # +.example.com  → DOMAIN-SUFFIX,example.com
+    # 去掉 +. 前缀（如果有）
     if item.startswith("+."):
-        rules.add(f"DOMAIN-SUFFIX,{item[2:]}")
-    else:
-        rules.add(f"DOMAIN,{item}")
+        item = item[2:]
+
+    rules.add(f"DOMAIN-SUFFIX,{item}")
 
 if not rules:
     raise RuntimeError("No rules generated from AWAvenue payload")
@@ -36,4 +36,4 @@ with open(OUT, "w", encoding="utf-8") as f:
     for rule in sorted(rules):
         f.write(rule + "\n")
 
-print(f"Generated {len(rules)} DOMAIN / DOMAIN-SUFFIX rules")
+print(f"Generated {len(rules)} DOMAIN-SUFFIX rules")
